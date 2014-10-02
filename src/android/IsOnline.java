@@ -20,7 +20,9 @@ under the License.
 package com.ideateam.plugin;
 
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,7 +54,7 @@ public class IsOnline extends CordovaPlugin {
     public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
         if (action.equals("isOnline")) {
 
-        	Log.d(TAG, "..action == isOnline" );
+        	Log.d(TAG, "..action == isOnline: " + isOnline);
         	
         	if(isOnline)
         		callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, "Internet Connection"));
@@ -86,8 +88,37 @@ public class IsOnline extends CordovaPlugin {
         }
     };
     
-    protected void onResume()
-    {
-        this.cordova.getActivity().registerReceiver(mConnReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    @Override
+    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+    	// TODO Auto-generated method stub
+    	super.initialize(cordova, webView);
+    	
+    	Log.d(TAG, "..initialize       getActivity()");
+    	
+    	this.cordova.getActivity().registerReceiver(mConnReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    	   
     }
+       
+    @Override
+    public void onResume(boolean multitasking) {
+    	// TODO Auto-generated method stub
+    	Log.d(TAG, "..onResume       getActivity()");
+    	this.cordova.getActivity().registerReceiver(mConnReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    	
+    	super.onResume(multitasking);
+    	
+    }
+    
+    @Override
+    public void onPause(boolean multitasking) {
+    	// TODO Auto-generated method stub
+
+    	Log.d(TAG, "..onPause       getActivity()");
+    	
+    	this.cordova.getActivity().unregisterReceiver(mConnReceiver);    	
+    	
+    	super.onPause(multitasking);
+    }
+    
+    
 }
