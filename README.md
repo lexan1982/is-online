@@ -4,9 +4,9 @@ Check if internet avaliable (not only connection) call:
   cordova.isonline(callbackSuccess, callbackError, action);
 </pre>
 params:<br/>
-        callbackSuccess // Internet Connected<br/>
-        callbackError   // No Internet Connection<br/>
-        action          //'isOnline'<br/>
+&nbsp;&nbsp;callbackSuccess // Internet Connected<br/>
+&nbsp;&nbsp;callbackError   // No Internet Connection<br/>
+&nbsp;&nbsp;action          //'isOnline'<br/>
         
 ================
 
