@@ -24,17 +24,13 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.util.Base64;
 import android.util.Log;
 
 /**
@@ -43,7 +39,7 @@ import android.util.Log;
 public class IsOnline extends CordovaPlugin {
 
 	 private String TAG = "CordovaPlugin isOnline";
- 
+	 private boolean isOnline;
      
      /**
      * Executes the request and returns PluginResult.
@@ -57,34 +53,12 @@ public class IsOnline extends CordovaPlugin {
         if (action.equals("isOnline")) {
 
         	Log.d(TAG, "..action == isOnline" );
-        	Log.d(TAG, args.getString(0));
         	
-        	if(!isOnline()){
-        		Log.d(TAG, ".. no internet connetion");
+        	if(isOnline)
+        		callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, "Internet Connection"));
+        	else 
         		callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, "No Internet Connection"));
-        		 
-        	}else{
-        		
-        		
-        		
-        		JSONObject obj = new JSONObject(args.getString(0));
-        		
-        		String mail = obj.getString("mail");
-        		Log.d(TAG, mail);
-        		String subject = obj.getString("subject");
-        		Log.d(TAG, subject);
-        		String text = obj.getString("text");
-        		Log.d(TAG, text);
-        		String attachPath = obj.getString("attachPath");
-        		Log.d(TAG, attachPath);
-        		
-        		SendEmail(mail, subject, text, attachPath);
-        		
-        		callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, "Mail sended"));
-        		
-        	}
-        	
-        	
+         	
           
         }  else {
             return false;
@@ -92,4 +66,28 @@ public class IsOnline extends CordovaPlugin {
         return true;
     }
     
+    private BroadcastReceiver mConnReceiver = new BroadcastReceiver() 
+    {
+        @Override
+        public void onReceive(Context context, Intent intent) 
+        {
+            boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
+
+            if (noConnectivity == true)
+            {
+                Log.d(TAG, "No internet connection");
+                isOnline = false;
+            }
+            else
+            {
+                Log.d(TAG, "Interet connection is UP");
+                isOnline = true;
+            }
+        }
+    };
+    
+    protected void onResume()
+    {
+        this.cordova.getActivity().registerReceiver(mConnReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
 }
