@@ -25,7 +25,7 @@
     <name>IsOnline</name>
     
     <js-module src="www/isonline.js" name="isonline">
-        <clobbers target="cordova.version" />
+        <clobbers target="cordova.isonline" />
     </js-module>
 
     <!-- android -->
