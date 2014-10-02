@@ -56,8 +56,6 @@ public class IsOnline extends CordovaPlugin {
     @SuppressLint("NewApi") 
     public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
         if (action.equals("isOnline")) {
-
-        	Log.d(TAG, "..action == isOnline: " + isOnline);
         	
         	if(isOnline)
         		callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, "Internet Connection"));
@@ -80,13 +78,13 @@ public class IsOnline extends CordovaPlugin {
 
             if (noConnectivity == true)
             {
-                Log.d(TAG, "No internet connection");
+                Log.d(TAG, "..No internet connection");
                 isOnline = false;
                 ((CordovaActivity)activity).sendJavascript("UART.system.Connection.onOffLine()");  
             }
             else
             {
-                Log.d(TAG, "Interet connection is UP");
+                Log.d(TAG, "..Interet connection is UP");
                 isOnline = true;
                 ((CordovaActivity)activity).sendJavascript("UART.system.Connection.onOnLine()");
             }
@@ -97,9 +95,7 @@ public class IsOnline extends CordovaPlugin {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
     	// TODO Auto-generated method stub
     	super.initialize(cordova, webView);
-    	
-    	Log.d(TAG, "..initialize       getActivity()");
-    	
+        	
     	activity = this.cordova.getActivity();
     	activity.registerReceiver(mConnReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     	   
@@ -108,9 +104,8 @@ public class IsOnline extends CordovaPlugin {
     @Override
     public void onResume(boolean multitasking) {
     	// TODO Auto-generated method stub
-    	Log.d(TAG, "..onResume       getActivity()");
-    	this.cordova.getActivity().registerReceiver(mConnReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     	
+    	this.cordova.getActivity().registerReceiver(mConnReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     	super.onResume(multitasking);
     	
     }
@@ -118,9 +113,8 @@ public class IsOnline extends CordovaPlugin {
     @Override
     public void onPause(boolean multitasking) {
     	// TODO Auto-generated method stub
-    	Log.d(TAG, "..onPause       getActivity()");    	
-    	this.cordova.getActivity().unregisterReceiver(mConnReceiver);    	
-    	
+    
+    	this.cordova.getActivity().unregisterReceiver(mConnReceiver); 
     	super.onPause(multitasking);
     }
     
