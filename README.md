@@ -8,8 +8,7 @@ Check if internet avaliable (not only connection) call:
 If state change - from native will call functions:
 <pre>
   activity.sendJavascript("UART.system.Connection.onOnLine()");
+  //or
+  //activity.sendJavascript("UART.system.Connection.onOffLine()");
 </pre>
-or
-<pre>
-  activity.sendJavascript("UART.system.Connection.onOffLine()");
-</pre>
+
