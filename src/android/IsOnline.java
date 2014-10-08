@@ -84,7 +84,7 @@ public class IsOnline extends CordovaPlugin {
             }
             else
             {
-                Log.d(TAG, "..Interet connection is UP");
+                Log.d(TAG, "..Internet connection is UP");
                 isOnline = true;
                 ((CordovaActivity)activity).sendJavascript("UART.system.Connection.onOnLine()");
             }
