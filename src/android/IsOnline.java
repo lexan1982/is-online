@@ -58,9 +58,9 @@ public class IsOnline extends CordovaPlugin {
         if (action.equals("isOnline")) {
         	
         	if(isOnline)
-        		callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, "Internet Connection"));
+        		((CordovaActivity)activity).sendJavascript("UART.system.Connection.onOnLine()");
         	else 
-        		callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, "No Internet Connection"));
+        		((CordovaActivity)activity).sendJavascript("UART.system.Connection.onOffLine()"); 
          	
           
         }  else {
